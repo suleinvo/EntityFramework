@@ -9,10 +9,19 @@ namespace Microsoft.Data.Entity.Relational.Query.Methods
     {
         public virtual Expression Translate(MethodCallExpression methodCallExpression)
         {
-            return methodCallExpression.Method.Name == "Equals"
-                   && methodCallExpression.Arguments.Count == 1
-                ? Expression.Equal(methodCallExpression.Object, methodCallExpression.Arguments[0])
-                : null;
+            if (methodCallExpression.Method.Name == "Equals"
+                   && methodCallExpression.Arguments.Count == 1)
+            {
+                var argument = methodCallExpression.Arguments[0];
+                if (methodCallExpression.Object.Type != argument.Type)
+                {
+                    argument = Expression.Convert(argument, methodCallExpression.Object.Type);
+                }
+
+                return Expression.Equal(methodCallExpression.Object, argument);
+            }
+
+            return null;
         }
     }
 }

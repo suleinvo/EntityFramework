@@ -53,10 +53,10 @@ namespace Microsoft.Data.Entity.Relational.Query.ExpressionTreeVisitors
                     var left = VisitExpression(binaryExpression.Left);
                     var right = VisitExpression(binaryExpression.Right);
 
-                    return left != null
-                           && right != null
-                        ? Expression.AndAlso(left, right)
-                        : (left ?? right);
+                        return left != null
+                               && right != null
+                            ? Expression.AndAlso(left, right)
+                            : null;
                 }
 
                 case ExpressionType.OrElse:

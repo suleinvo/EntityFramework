@@ -243,7 +243,11 @@ namespace Microsoft.Data.Entity.Query
 
                         _queryContext.ParameterValues.Add(parameterName, parameterValue);
 
-                        return Expression.Parameter(expression.Type, parameterName);
+                        return e.Type == expression.Type 
+                            ? Expression.Parameter(e.Type, parameterName)
+                            : (Expression)Expression.Convert(
+                                Expression.Parameter(e.Type, parameterName), 
+                                expression.Type);
                     }
                     catch (Exception exception)
                     {
