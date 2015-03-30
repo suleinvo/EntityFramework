@@ -74,6 +74,12 @@ namespace Microsoft.Data.Entity.SqlServer.Metadata.ModelConventions
                 SqlServerAnnotationNames.Prefix + SqlServerAnnotationNames.ValueGeneration,
                 SqlServerValueGenerationStrategy.Sequence.ToString(),
                 ConfigurationSource.Convention);
+
+            var extensions = modelBuilder.Metadata.SqlServer();
+            var sequence = extensions.GetOrAddSequence();
+            extensions.DefaultSequenceName = sequence.Name;
+            extensions.DefaultSequenceSchema = sequence.Schema;
+
             return modelBuilder;
         }
     }
